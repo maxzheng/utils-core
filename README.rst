@@ -20,6 +20,8 @@ Examples for filesystem-related utilities:
 
 .. code-block:: python
 
+    import os
+
     from utils.fs import in_dir, in_temp_dir
 
 
