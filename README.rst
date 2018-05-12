@@ -30,3 +30,15 @@ Examples for filesystem-related utilities:
 
     with in_dir('/tmp'):
         assert os.getcwd() == '/tmp'
+
+
+Links & Contact Info
+====================
+
+| PyPI Package: https://pypi.python.org/pypi/utils-core
+| GitHub Source: https://github.com/maxzheng/utils-core
+| Report Issues/Bugs: https://github.com/maxzheng/utils-core/issues
+|
+| Follow: https://twitter.com/MaxZhengX
+| Connect: https://www.linkedin.com/in/maxzheng
+| Contact: maxzheng.os @t gmail.com
