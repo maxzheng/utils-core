@@ -40,7 +40,7 @@ class TimeUnit(IntEnum):
         for unit in reversed(TimeUnit):
             if seconds >= unit.seconds:
                 name = unit.name.lower()
-                count = seconds // unit.seconds
+                count = int(seconds / unit.seconds)
                 num_units.append(f'{count} {plural(name, count=count)}')
                 seconds -= count * unit.seconds
 
