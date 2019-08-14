@@ -1,4 +1,5 @@
 import os
+import pickle
 
 import pytest
 
@@ -26,11 +27,12 @@ def test_run(capsys):
         assert out == ''
 
 
-def test_processify():
-    @processify
-    def test_function():
-        return os.getpid()
+@processify
+def get_child_pid():
+    return os.getpid()
 
+
+def test_processify():
     @processify
     def test_deadlock():
         """ Ensure large results does not end in a deadlock """
@@ -40,7 +42,7 @@ def test_processify():
     def test_exception():
         raise RuntimeError('xyz')
 
-    child_pid = test_function()
+    child_pid = get_child_pid()
     assert os.getpid() != child_pid > 0
     assert not is_running(child_pid)
     assert len(test_deadlock()) == 30000
@@ -48,6 +50,9 @@ def test_processify():
     with pytest.raises(RuntimeError) as e:
         test_exception()
     assert 'xyz' in str(e)
+
+    get_pid = pickle.loads(pickle.dumps(get_child_pid))
+    assert get_pid() > 0
 
 
 def test_is_running():
