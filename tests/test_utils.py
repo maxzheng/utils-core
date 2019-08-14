@@ -1,4 +1,4 @@
-from utils import plural, TimeUnit
+from utils_core import plural, TimeUnit
 
 
 def test_plural():

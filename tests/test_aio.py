@@ -1,6 +1,6 @@
 from time import sleep
 
-from utils.aio import run_sync
+from utils_core.aio import run_sync
 
 
 async def test_run_sync():

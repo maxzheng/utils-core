@@ -2,8 +2,8 @@ import os
 
 import pytest
 
-from utils.process import run, silent_run, RunError, processify, is_running
-from utils.fs import in_temp_dir
+from utils_core.process import run, silent_run, RunError, processify, is_running
+from utils_core.fs import in_temp_dir
 
 
 def test_run(capsys):
