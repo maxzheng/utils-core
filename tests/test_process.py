@@ -1,6 +1,8 @@
+import os
+
 import pytest
 
-from utils.process import run, silent_run, RunError
+from utils.process import run, silent_run, RunError, processify
 from utils.fs import in_temp_dir
 
 
@@ -22,3 +24,25 @@ def test_run(capsys):
         assert silent_run('ls -l')
         out, _ = capsys.readouterr()
         assert out == ''
+
+
+def test_processify():
+    @processify
+    def test_function():
+        return os.getpid()
+
+    @processify
+    def test_deadlock():
+        """ Ensure large results does not end in a deadlock """
+        return range(30000)
+
+    @processify
+    def test_exception():
+        raise RuntimeError('xyz')
+
+    assert os.getpid() != test_function() > 0
+    assert len(test_deadlock()) == 30000
+
+    with pytest.raises(RuntimeError) as e:
+        test_exception()
+    assert 'xyz' in str(e)
