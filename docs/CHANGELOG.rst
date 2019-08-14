@@ -1,5 +1,14 @@
-Version 0.0.5
+Version 0.1.0
 ================================================================================
+
+* Rename package namespace from utils to utils_core to avoid conflicts with local utils.py packages.
+  
+  All imports should migrate to use utils_core, but the old namespace is maintained for backward compatibility.
+* Add is_running to check if process is running
+* Add processify to run function in a subprocess
+
+Version 0.0.5
+--------------------------------------------------------------------------------
 
 * Add run_sync to run sync func in async program
 
