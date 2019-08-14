@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from utils.process import run, silent_run, RunError, processify
+from utils.process import run, silent_run, RunError, processify, is_running
 from utils.fs import in_temp_dir
 
 
@@ -40,9 +40,15 @@ def test_processify():
     def test_exception():
         raise RuntimeError('xyz')
 
-    assert os.getpid() != test_function() > 0
+    child_pid = test_function()
+    assert os.getpid() != child_pid > 0
+    assert not is_running(child_pid)
     assert len(test_deadlock()) == 30000
 
     with pytest.raises(RuntimeError) as e:
         test_exception()
     assert 'xyz' in str(e)
+
+
+def test_is_running():
+    assert is_running(os.getpid())

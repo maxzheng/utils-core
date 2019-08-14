@@ -1,11 +1,27 @@
 from functools import wraps
 import logging
 from multiprocessing import Process, Queue
+import os
 import subprocess
 import sys
 import traceback
 
 log = logging.getLogger(__name__)
+
+
+class RunError(Exception):
+    pass
+
+
+def is_running(pid):
+    """ Returns True if the given process PID is running """
+    try:
+        os.kill(pid, 0)
+
+    except OSError:
+        return False
+
+    return True
 
 
 def processify(func):
@@ -54,10 +70,6 @@ def processify(func):
 
         return ret
     return wrapper
-
-
-class RunError(Exception):
-    pass
 
 
 def silent_run(*args, **kwargs):
