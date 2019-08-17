@@ -1,5 +1,11 @@
-Version 0.1.0
+Version 0.1.1
 ================================================================================
+
+* Add timeout function and support to processify
+* Test pickle of processify
+
+Version 0.1.0
+--------------------------------------------------------------------------------
 
 * Rename package namespace from utils to utils_core to avoid conflicts with local utils.py packages.
   
