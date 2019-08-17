@@ -6,6 +6,8 @@ import subprocess
 import sys
 import traceback
 
+from utils_core.func import timeout as func_timeout
+
 log = logging.getLogger(__name__)
 
 
@@ -24,7 +26,7 @@ def is_running(pid):
     return True
 
 
-def processify(func):
+def processify(timeout=None):
     """
     Decorator to run a function as a process. Copied from https://gist.github.com/schlamar/2311116
 
@@ -36,15 +38,32 @@ def processify(func):
     @processify
     def f(args):
         return "this runs in a separate process"
-    """
 
+    @processify(timeout=20)
+    def long_running(args):
+        time.sleep(100)
+        return "this will timeout and get killed in 20 secs"
+    """
+    if callable(timeout):
+        return _processify(timeout)
+
+    else:
+        def decorator(func):
+            return _processify(func, timeout=timeout)
+        return decorator
+
+
+def _processify(func, timeout=None):
     def process_func(q, *args, **kwargs):
         try:
-            ret = func(*args, **kwargs)
+            f = func_timeout(timeout)(func) if timeout else func
+            ret = f(*args, **kwargs)
+
         except Exception:
             ex_type, ex_value, tb = sys.exc_info()
             error = ex_type, ex_value, ''.join(traceback.format_tb(tb))
             ret = None
+
         else:
             error = None
 
