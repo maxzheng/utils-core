@@ -56,11 +56,13 @@ def processify(timeout=None):
 def _processify(func, timeout=None):
     def process_func(q, *args, **kwargs):
         try:
-            f = func_timeout(timeout)(func) if timeout else func
+            f = func_timeout(timeout, raises=SystemExit)(func) if timeout else func
             ret = f(*args, **kwargs)
 
-        except Exception:
+        except (SystemExit, Exception):
             ex_type, ex_value, tb = sys.exc_info()
+            if ex_type == SystemExit:  # We need SystemExit to cause everything to terminate, but not re-raise later
+                ex_type = TimeoutError
             error = ex_type, ex_value, ''.join(traceback.format_tb(tb))
             ret = None
 
