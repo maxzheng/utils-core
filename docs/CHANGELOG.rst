@@ -1,5 +1,13 @@
-Version 0.1.1
+Version 0.1.2
 ================================================================================
+
+* Allow exception class to be changed for timeout and use SystemExit for processify
+  
+  SystemExit will ensure everything are terminated, while other exceptions may be caught and not handled
+  properly (even another BaseException)
+
+Version 0.1.1
+--------------------------------------------------------------------------------
 
 * Add timeout function and support to processify
 * Test pickle of processify
